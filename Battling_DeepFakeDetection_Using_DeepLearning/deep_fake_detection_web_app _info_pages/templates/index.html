@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Deepfake Detection</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 20px;
+            text-align: center;
+        }
+
+        nav {
+            display: flex;
+            justify-content: flex-start;
+            padding: 10px;
+        }
+
+        .home-button {
+            background-color: #333;
+            color: #fff;
+            border: none;
+            padding: 10px 15px;
+            cursor: pointer;
+            font-size: 16px;
+            border-radius: 5px;
+        }
+
+        h1 {
+            margin: 20px 0;
+        }
+
+        form {
+            margin: 20px 0;
+        }
+
+        .frames {
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            margin-top: 20px;
+        }
+
+        .frame {
+            margin: 10px;
+            text-align: center;
+        }
+
+        .frame img {
+            width: 200px;
+            height: auto;
+            border: 2px solid #ccc;
+            border-radius: 8px;
+        }
+    </style>
+    <script>
+        // Show an alert when a flash message is sent
+        document.addEventListener("DOMContentLoaded", function() {
+            const flashMessages = document.querySelectorAll(".flash-message");
+            flashMessages.forEach(message => {
+                alert(message.textContent.trim());
+            });
+        });
+    </script>
+</head>
+<body>
+    <div class="container">
+        <nav>
+            <button onclick="location.href='/'" class="home-button">Home</button>
+        </nav>
+
+        <h1>Deepfake Detection</h1>
+        <form method="POST" enctype="multipart/form-data">
+            <input type="file" name="file" accept="video/*">
+            <button type="submit">Upload Video</button>
+        </form>
+
+        {% if frames %}
+        <div class="frames">
+            {% for frame in frames %}
+            <div class="frame">
+                <img src="{{ frame.image }}" alt="Frame">
+                <p><strong>{{ frame.prediction }}</strong> - 
+                    {% if frame.prediction == "Fake" %}
+                        "This frame shows signs of manipulation!"
+                    {% else %}
+                        "This frame appears authentic!"
+                    {% endif %}
+                </p>
+            </div>
+            {% endfor %}
+        </div>
+        {% endif %}
+    </div>
+    <script>
+        document.getElementById('uploadForm').addEventListener('submit', function(event) {
+            var fileInput = document.getElementById('fileInput');
+            var file = fileInput.files[0];
+            if (file) {
+                var fileSize = file.size / 1024 / 1024; // Size in MB
+                if (fileSize > 100) {
+                    alert('Please upload a video that is less than or equal to 100MB.');
+                    event.preventDefault(); // Prevent form submission
+                }
+            }
+        });
+    </script>
+</body>
+</html>

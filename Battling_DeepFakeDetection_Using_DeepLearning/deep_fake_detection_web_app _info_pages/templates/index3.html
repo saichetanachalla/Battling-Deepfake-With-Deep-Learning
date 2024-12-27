@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Deepfake Detection</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 20px;
+            text-align: center;
+        }
+
+        nav {
+            display: flex;
+            justify-content: flex-start;
+            padding: 10px;
+        }
+
+        .home-button {
+            background-color: #333;
+            color: #fff;
+            border: none;
+            padding: 10px 15px;
+            cursor: pointer;
+            font-size: 16px;
+            border-radius: 5px;
+        }
+
+        h1 {
+            margin: 20px 0;
+        }
+
+        form {
+            margin: 20px 0;
+        }
+
+        .result-section {
+            margin-top: 20px;
+            text-align: center;
+        }
+
+        .uploaded-image {
+            max-width: 300px;
+            margin: 20px auto;
+            display: block;
+            border: 2px solid #ccc;
+            border-radius: 8px;
+        }
+
+        .result-text {
+            font-size: 18px;
+            font-weight: bold;
+            color: #333;
+        }
+
+        .fake {
+            color: red;
+        }
+
+        .real {
+            color: green;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Navigation -->
+        <nav>
+            <button onclick="location.href='/'" class="home-button">Home</button>
+        </nav>
+
+        <!-- Title -->
+        <h1>Deepfake Detection</h1>
+
+        <!-- File Upload Form -->
+        <form method="POST" enctype="multipart/form-data">
+            <input type="file" name="file" accept="image/*" required>
+            <button type="submit">Upload Image</button>
+        </form>
+
+        <!-- Result Section -->
+        {% if uploaded_image %}
+        <div class="result-section">
+            <img src="{{ uploaded_image }}" alt="Uploaded Image" class="uploaded-image">
+            <p class="result-text {% if is_fake %}fake{% else %}real{% endif %}">
+                {% if is_fake %}
+                    This image is likely fake!
+                {% else %}
+                    This image is real!
+                {% endif %}
+            </p>
+        </div>
+        {% endif %}
+    </div>
+</body>
+</html>

@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Real or Fake Detection</title>
+    <style>
+        /* General body styles */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 20px auto;
+            padding: 20px;
+            background: #ffffff;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            border-radius: 10px;
+            text-align: center;
+        }
+
+        h1, h2 {
+            color: #333;
+        }
+
+        .image-item {
+            margin: 20px 0;
+        }
+
+        .image-item img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 10px;
+        }
+
+        select {
+            padding: 10px;
+            font-size: 14px;
+        }
+
+        button {
+            padding: 12px 30px;
+            font-size: 16px;
+            background-color: #007bff;
+            color: #ffffff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .home-button {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            background-color: #007bff;
+            color: white;
+            padding: 10px 20px;
+            text-decoration: none;
+            border-radius: 5px;
+        }
+
+        .feedback {
+            margin-top: 30px;
+            font-size: 18px;
+            color: #444;
+        }
+
+        .references {
+            margin-top: 20px;
+            text-align: left;
+        }
+
+        .references a {
+            color: #007bff;
+            text-decoration: none;
+        }
+
+        .references a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <!-- Home Button -->
+    <a href="/" class="home-button">Home</a>
+
+    <!-- Main Container -->
+    <div class="container">
+        {% if images %}
+        <h1>Detect Real or Fake Images</h1>
+        <h2>Test your knowledge and identify the below images as fake or real</h2>
+        <form method="POST">
+            {% for image in images %}
+            <div class="image-item">
+                <img src="{{ url_for('static', filename=image) }}" alt="Image">
+                <p>Is this image real or fake?</p>
+                <select name="response" required>
+                    <option value="real">Real</option>
+                    <option value="fake">Fake</option>
+                </select>
+                <input type="hidden" name="image" value="{{ image }}">
+            </div>
+            {% endfor %}
+            <button type="submit">Submit Answers</button>
+        </form>
+        {% else %}
+        <h1>Results</h1>
+        <p class="feedback">{{ feedback }}</p>
+        <p>Your Score: {{ score }}/10 ({{ percentage }}%)</p>
+        <div class="references">
+            <h2>Learn More About Deepfakes</h2>
+            <ul>
+                {% for ref in references %}
+                <li><a href="{{ ref.link }}" target="_blank">{{ ref.title }}</a></li>
+                {% endfor %}
+            </ul>
+        </div>
+        {% endif %}
+    </div>
+</body>
+</html>
